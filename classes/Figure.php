@@ -22,13 +22,36 @@ class Line extends Figure{
         $dirX = $dx / $l;
         $dirY = $dy / $l;
 
-        $arr[] = [$this->x1,$this->y1];
-        $arr[] = [$this->x2,$this->y2];
+       // $arr[] = [$this->x1,$this->y1];
+       // $arr[] = [$this->x2,$this->y2];
 
         for($i = 0 ; $i < $l ; $i++){
-            $arr[] = [$this->x1+$dirX*$i, $this->y1+$dirY*$i];
+            $arr[] = [$this->y1+$dirY*$i, $this->x1+$dirX*$i];
         }
         return $arr;
     }
 }
 
+class Circle extends Figure{
+    protected $x, $y, $r;
+    public function __construct($x, $y, $r){ // создание фигуры
+        $this->x = $x; $this->y = $y;
+        $this->r = $r;
+    }
+    public function getPoints(){  // получить все точки фигуры
+        $arr = null;
+        for ($i = 0 ; $i < $this->r+1 ; $i++){
+            for ($j = 0 ; $j < $this->r+1 ; $j++){
+                  if($i*$i+$j*$j - $this->r*$this->r >= 0 && $i*$i+$j*$j - $this->r*$this->r < $this->r*2){
+                 //   printf('%.2f , %.2f ;  %.2f<br>', $i*$i+$j*$j, $this->r*$this->r, $i*$i+$j*$j - $this->r*$this->r);
+
+                    $arr[] = [$this->y+$i,$this->x+$j];
+                    $arr[] = [$this->y-$i,$this->x+$j];
+                    $arr[] = [$this->y+$i,$this->x-$j];
+                    $arr[] = [$this->y-$i,$this->x-$j];
+                }
+            }
+        }
+        return $arr;
+    }
+}

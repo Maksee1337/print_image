@@ -1,16 +1,19 @@
 <?php
 
-    include 'classes/Desk.php';
+ //   include 'classes/Desk.php';
+    include 'classes/BitMap.php';
 
-    $desk = new Desk(40,150);
-    $desk->AddFigure(new Line(rand(0,40),rand(0,150),rand(0,40),rand(0,150)));
-    $desk->AddFigure(new Line(rand(0,40),rand(0,150),rand(0,40),rand(0,150)));
-    $desk->AddFigure(new Line(rand(0,40),rand(0,150),rand(0,40),rand(0,150)));
-    $desk->AddFigure(new Line(rand(0,40),rand(0,150),rand(0,40),rand(0,150)));
-    $desk->AddFigure(new Line(rand(0,40),rand(0,150),rand(0,40),rand(0,150)));
-  /*  $desk->AddFigure(new Line(15,122,4,20));
-    $desk->AddFigure(new Line(5,5,37,25));
-    $desk->AddFigure(new Line(5,10,30,140));
-    $desk->AddFigure(new Line(33,0,0,140));*/
+    $bmp = new BitMap(400,300);
 
-    $desk->PrintMe('<br>');
+    $bmp->AddFigure(new Line(rand(0,400),rand(0,300),rand(0,400),rand(0,300)));
+    $bmp->AddFigure(new Line(rand(0,400),rand(0,300),rand(0,400),rand(0,300)));
+    $bmp->AddFigure(new Line(rand(0,400),rand(0,300),rand(0,400),rand(0,300)));
+    $bmp->AddFigure(new Line(rand(0,400),rand(0,300),rand(0,400),rand(0,300)));
+
+    $bmp->AddFigure(new Circle(rand(0,400),rand(0,300),rand(0,200)));
+    $bmp->AddFigure(new Circle(rand(0,400),rand(0,300),rand(0,200)));
+    $bmp->AddFigure(new Circle(rand(0,400),rand(0,300),rand(0,200)));
+
+    $bmp->SaveFile('image.bmp');
+
+    echo '<img src="image.bmp"/>';
