@@ -2,7 +2,7 @@
 
 
 abstract class Figure{
-    protected $posX, $posY; //начальное положение фигуры
+    protected $posX, $posY, $fill; //начальное положение фигуры
     abstract function getPoints();  // получить все точки фигуры
 }
 
@@ -34,45 +34,45 @@ class Line extends Figure{
 }
 
 class Circle extends Figure{
-    protected $x, $y, $r, $fill;
+    protected $r;
     public function __construct($x, $y, $r, $fill = 0){ // создание фигуры
-        $this->x = $x; $this->y = $y;
+        $this->posX = $x; $this->posY = $y;
         $this->r = $r; $this->fill = $fill;
     }
     public function getPoints(){  // получить все точки фигуры
         $arr = null;
-       if($this->fill == 0) {
+        $add_point = function ($i, $j) use (&$arr){
+            $arr[] = [$this->posY + $i, $this->posX + $j];
+            $arr[] = [$this->posY - $i, $this->posX + $j];
+            $arr[] = [$this->posY + $i, $this->posX - $j];
+            $arr[] = [$this->posY - $i, $this->posX - $j];
+        };
+       if($this->fill == 0) { // только контур
            for ($i = 0; $i < $this->r + 1; $i++) {
                for ($j = 0; $j < $this->r + 1; $j++) {
                    if ($i * $i + $j * $j - $this->r * $this->r >= 0 && $i * $i + $j * $j - $this->r * $this->r < $this->r * 2) {
                        //   printf('%.2f , %.2f ;  %.2f<br>', $i*$i+$j*$j, $this->r*$this->r, $i*$i+$j*$j - $this->r*$this->r);
-
-                       $arr[] = [$this->y + $i, $this->x + $j];
-                       $arr[] = [$this->y - $i, $this->x + $j];
-                       $arr[] = [$this->y + $i, $this->x - $j];
-                       $arr[] = [$this->y - $i, $this->x - $j];
+                       $add_point($i,$j);
                    }
                }
            }
-       }else{
+       }else{   // полное заполнение
            for ($i = 0; $i < $this->r + 1; $i++) {
                for ($j = 0; $j < $this->r + 1; $j++) {
                    if ($i * $i + $j * $j < $this->r * $this->r) {
-                       $arr[] = [$this->y + $i, $this->x + $j];
-                       $arr[] = [$this->y - $i, $this->x + $j];
-                       $arr[] = [$this->y + $i, $this->x - $j];
-                       $arr[] = [$this->y - $i, $this->x - $j];
+                        $add_point($i,$j);
                    }
                }
            }
 
        }
+       //var_dump($arr);
         return $arr;
     }
 }
 
 class Rectangle extends Figure{
-    protected $sizeX, $sizeY, $fill;
+    protected $sizeX, $sizeY;
     public function __construct($posX, $posY,  $width,$height, $fill = 0){ // создание фигуры
         $this->sizeX = $width; $this->sizeY = $height;
         $this->posX = $posX; $this->posY = $posY;
@@ -81,7 +81,7 @@ class Rectangle extends Figure{
     public function getPoints()
     {  // получить все точки фигуры
         $arr = null;
-        if ($this->fill == 0) {
+        if ($this->fill == 0) { // только контур
             for ($i = 0; $i < $this->sizeX; $i++) {
                 $arr[] = [$this->posY, $this->posX + $i];
                 $arr[] = [$this->posY + $this->sizeY, $this->posX + $i];
@@ -90,9 +90,8 @@ class Rectangle extends Figure{
                 $arr[] = [$i + $this->posY, $this->posX];
                 $arr[] = [$i + $this->posY, $this->posX + $this->sizeX];
             }
-        }else {
-            for ($j = 0; $j <$this->sizeY  ; $j++)
-            {
+        }else { // полное заполнение
+            for ($j = 0; $j <$this->sizeY  ; $j++) {
                 for ($i = 0; $i < $this->sizeX; $i++) {
                     $arr[] = [$this->posY + $j, $this->posX + $i];
                 }

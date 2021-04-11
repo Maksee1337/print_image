@@ -1,7 +1,9 @@
 <?php
 
- //   include 'classes/Desk.php';
-    include 'classes/BitMap.php';
+    spl_autoload_register(function ($className){
+        include 'classes/'.$className.'.php';
+       // echo $className;
+    });
 
     $bmp = new BitMap(800,600);
 
